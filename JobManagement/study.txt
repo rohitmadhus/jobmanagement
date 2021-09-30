@@ -1,0 +1,2 @@
+To make a field unique in mongo
+@Indexed(unique = true)
