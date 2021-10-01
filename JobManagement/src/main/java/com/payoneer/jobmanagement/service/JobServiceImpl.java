@@ -28,4 +28,9 @@ public class JobServiceImpl implements JobService {
     public Optional<List<JobFlow>> findAllScheduledJobs() {
        return jobFlowRepository.findAllByScheduledIsTrue();
     }
+
+    @Override
+    public void runReportCreationJob() {
+
+    }
 }
