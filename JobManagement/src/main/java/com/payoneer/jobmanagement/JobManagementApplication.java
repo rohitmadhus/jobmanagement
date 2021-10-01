@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
 @EnableMongoAuditing
-@SpringBootApplication(exclude = {MongoAutoConfiguration.class})
+@SpringBootApplication
 public class JobManagementApplication {
 
 	public static void main(String[] args) {

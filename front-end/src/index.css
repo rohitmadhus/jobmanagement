@@ -1,0 +1,72 @@
+html {
+  font-size: 62.5%; /* 16px(default font size) * 62.5 = 10px = 1rem */
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-size: 1.6rem;
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 4rem 1fr 4rem;
+  height: 100%;
+}
+
+header {
+  grid-area: header; /*linking this area with above mention header*/
+  background-color: #202040;
+}
+
+main {
+  grid-area: main;
+  padding: 1rem;
+}
+
+footer {
+  grid-area: footer;
+  background-color: #202040;
+  color: #ffffff;
+  font-size: 1.3rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /*if no space in line then will move to next line */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row.center {
+  justify-content: center;
+}
+
+.row.top {
+  align-items: flex-start;
+}
+
+a.brand {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  padding-left: 2rem;
+  text-decoration: none;
+}
+
+.loading {
+  display: block; /* To avoid movement*/
+}
