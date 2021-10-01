@@ -72,18 +72,21 @@ public class ApplicationConfig {
 
     }
 
+    /**
+     * chunk size is set to 10 that is 10 data per transaction
+     */
+
     @Bean
     public Step step1(){
         return stepBuilderFactory.get("step-1").<CreditCardUser,CreditCardUser>chunk(10).reader(reader()).processor(process()).writer(writer()).build();
     }
 
-    public Job runJob(){
+    public Job runJob(String jobFlowId){
         return jobBuilderFactory.get("report generation").flow(step1()).end().build();
     }
 
     /**
      *  The process condition is created and will send mail for pending user
-     *
      */
     public ItemProcessor<CreditCardUser,CreditCardUser> process(){
         ItemProcessor<CreditCardUser,CreditCardUser> process = new ItemProcessor<CreditCardUser, CreditCardUser>() {

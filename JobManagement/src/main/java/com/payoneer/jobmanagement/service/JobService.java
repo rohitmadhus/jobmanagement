@@ -9,4 +9,5 @@ public interface JobService {
     public void createJobFlow(JobFlow jobFlow);
     public Optional<List<JobFlow>> findAllScheduledJobs();
     public void runReportCreationJob();
+    public JobFlow updateJobFlow(JobFlow jobFlow);
 }

@@ -30,7 +30,8 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void runReportCreationJob() {
+    public JobFlow updateJobFlow(JobFlow jobFlow) {return jobFlowRepository.save(jobFlow);}
 
-    }
+    @Override
+    public void runReportCreationJob() {}
 }
