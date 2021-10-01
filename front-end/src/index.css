@@ -70,3 +70,16 @@ a.brand {
 .loading {
   display: block; /* To avoid movement*/
 }
+
+button {
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  border: 0.1rem #a4a4a4 solid;
+  background-color: coral;
+  color: white;
+  font-size: 1.6rem;
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 2rem 2rem;
+}

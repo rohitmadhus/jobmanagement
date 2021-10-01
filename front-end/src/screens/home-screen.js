@@ -22,11 +22,20 @@ export default function HomeScreen() {
     };
     fetchJobs();
   }, []);
+
+  const createJob = () => {
+    console.log("job created");
+  };
+
+  const createScheduledJob = () => {
+    console.log("created a scheduled job");
+  };
+
   return (
     <div>
-      <div className="row">
-        <button>Create a job</button>
-        <button>Create a job</button>
+      <div className="center">
+        <button onClick={createJob}>Create a job</button>
+        <button onClick={createScheduledJob}>Create a scheduled job</button>
       </div>
       {loading ? (
         <div className="loading">
@@ -37,9 +46,9 @@ export default function HomeScreen() {
           <div>Something went wrong</div>
         </div>
       ) : (
-        <div className="row center">
+        <div className="center">
           {jobs.map((job) => (
-            <div>{job.id}</div>
+            <div key={job.id}>{job.id}</div>
           ))}
         </div>
       )}
