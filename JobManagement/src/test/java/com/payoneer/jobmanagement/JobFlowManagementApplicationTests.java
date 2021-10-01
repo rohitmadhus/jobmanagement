@@ -4,10 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JobManagementApplicationTests {
+class JobFlowManagementApplicationTests {
 
 	@Test
 	void contextLoads() {
+	}
+
+	@Test
+	void test1(){
+		assert(true);
 	}
 
 }

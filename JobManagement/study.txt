@@ -1,2 +1,28 @@
 To make a field unique in mongo
 @Indexed(unique = true)
+
+@Bean
+CommandLineRunner runner(CreditCardUserRepository repo){
+		return args -> {
+			CreditCardUser user = new CreditCardUser(
+					"John","3rd street Kochi , India","1111-2222-3333-4444",40000, CreditCardUserParameter.BILL_STATUS.paid,"mailrohitmadhu@gmail.com");
+			CreditCardUser user1 = new CreditCardUser(
+					"Sam","2rd street california , US","1112-2222-3333-4444",20000, CreditCardUserParameter.BILL_STATUS.pending,"mailrohitmadhu@gmail.com");
+			CreditCardUser user2 = new CreditCardUser(
+					"Rohit","dutch street, kochi, India","1113-2222-3333-4444",80000, CreditCardUserParameter.BILL_STATUS.paid,"rohit@gmail.com");
+			CreditCardUser user3 = new CreditCardUser(
+					"Kim","j nagar,Bangalore , India","1114-2222-3333-4444",430000, CreditCardUserParameter.BILL_STATUS.pending,"mailrohitmadhu@gmail.com");
+			CreditCardUser user4 = new CreditCardUser(
+					"Ria","Indra nagar , Bangalore ,India","1115-2222-3333-4444",10000, CreditCardUserParameter.BILL_STATUS.paid,"ria@gmail.com");
+			CreditCardUser user5 = new CreditCardUser(
+					"hannah","Sollinganalur Chennai,India","1116-2222-3333-4444",20000, CreditCardUserParameter.BILL_STATUS.paid,"hannah@gmail.com");
+			CreditCardUser user6 = new CreditCardUser(
+					"otis","Kormangala, Bangalore India","1117-2222-3333-4444",4300000, CreditCardUserParameter.BILL_STATUS.pending,"mailrohitmadhu@gmail.com");
+			CreditCardUser user7 = new CreditCardUser(
+					"jay","Adayar , Chennai, India","1118-2222-3333-4444",40000, CreditCardUserParameter.BILL_STATUS.pending,"mailrohitmadhu@gmail.com");
+			List<CreditCardUser> list = new ArrayList<>();
+			list.add(user);
+			list.add(user1);list.add(user2);list.add(user3);list.add(user4);list.add(user5);list.add(user6);list.add(user7);
+			repo.insert(list);
+		};
+	}

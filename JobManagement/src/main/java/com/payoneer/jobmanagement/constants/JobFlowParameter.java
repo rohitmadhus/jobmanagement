@@ -1,6 +1,6 @@
 package com.payoneer.jobmanagement.constants;
 
-public class JobParameter{
+public class JobFlowParameter {
     public enum Job_Type {
         DATA_EXTRACTION,
         DATA_CREATION,

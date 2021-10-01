@@ -1,7 +1,7 @@
 package com.payoneer.jobmanagement.service;
 
-import com.payoneer.jobmanagement.models.Job;
-import com.payoneer.jobmanagement.repository.JobRepository;
+import com.payoneer.jobmanagement.models.JobFlow;
+import com.payoneer.jobmanagement.repository.JobFlowRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,15 @@ import java.util.List;
 @Service
 public class JobServiceImpl implements JobService {
 
-    private final JobRepository jobRepository;
+    private final JobFlowRepository jobFlowRepository;
 
     @Override
-    public List<Job> findAllJobs() {
-        return jobRepository.findAll();
+    public List<JobFlow> findAllJobFlows() {
+        return jobFlowRepository.findAll();
+    }
+
+    @Override
+    public void createJobFlow(JobFlow jobFlow) {
+        jobFlowRepository.insert(jobFlow);
     }
 }
