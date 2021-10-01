@@ -29,15 +29,19 @@ public class JobManagementApplication {
 		SpringApplication.run(JobManagementApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner runner(JobFlowRepository repo){
-		return args -> {
-
-			JobFlow job = new JobFlow("job1", JobFlowParameter.Job_Status.JOB_CREATED, JobFlowParameter.Job_Type.DATA_CREATION,true);
-
-
-			//repo.insert(list);
-		};
-	}
+//	@Bean
+//	CommandLineRunner runner(JobFlowRepository repo){
+//		return args -> {
+//
+//			JobFlow job = new JobFlow("job1",false);
+//			JobFlow job1 = new JobFlow("job2",true);
+//			JobFlow job2 = new JobFlow("job3",true);
+//			List<JobFlow> jobs = new ArrayList<>();
+//			jobs.add(job);
+//			jobs.add(job1);
+//			jobs.add(job2);
+//			repo.insert(jobs);
+//		};
+//	}
 
 }

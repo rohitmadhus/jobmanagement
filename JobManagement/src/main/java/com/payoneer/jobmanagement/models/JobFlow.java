@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
 @Data
-@Document(collection = "jobs")
+@Document(collection = "job-flows")
 public class JobFlow {
     @Id
     private String id;
@@ -19,17 +19,15 @@ public class JobFlow {
     @LastModifiedDate
     private Date lastModifiedDate;
     private String name;
-    private boolean isScheduled;
-    private Date nextRun;
+    private boolean scheduled;
     private JobFlowParameter.Job_Status jobStatus;
     private JobFlowParameter.Job_Type jobType;
 
-    public JobFlow(String name, JobFlowParameter.Job_Status jobStatus, JobFlowParameter.Job_Type jobType,boolean isScheduled){
+    public JobFlow(String name,boolean scheduled){
         this.name = name;
-        this.jobStatus = jobStatus;
-        this.jobType = jobType;
-        this.isScheduled = isScheduled;
-        nextRun = new Date();
+        this.jobStatus = JobFlowParameter.Job_Status.JOB_CREATED;
+        this.jobType = JobFlowParameter.Job_Type.REPORT_GENERATION;
+        this.scheduled = scheduled;
     };
 
 }

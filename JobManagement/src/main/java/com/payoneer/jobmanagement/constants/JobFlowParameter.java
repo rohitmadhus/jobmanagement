@@ -4,6 +4,7 @@ public class JobFlowParameter {
     public enum Job_Type {
         DATA_EXTRACTION,
         DATA_CREATION,
+        REPORT_GENERATION
 
     }
 
