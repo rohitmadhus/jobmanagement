@@ -27,7 +27,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.oxm.xstream.XStreamMarshaller;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 @Configuration
 @EnableBatchProcessing
@@ -49,7 +52,7 @@ public class JobConfig {
     }
 
     @Bean
-    @StepScope
+    //@StepScope
     public MongoItemReader<CreditCardUser> reader() throws Exception, ParseException, NonTransientResourceException, MongoException {
         MongoItemReader<CreditCardUser> reader = new MongoItemReader<>();
         reader.setTemplate(mongoTemplate);
@@ -66,11 +69,11 @@ public class JobConfig {
      * apis -> JAXB,STAX
      */
     @Bean
-    @StepScope
+    //@StepScope
     public StaxEventItemWriter<CreditCardUser> writer() throws Exception {
         StaxEventItemWriter<CreditCardUser> writer = new StaxEventItemWriter<>();
         writer.setRootTagName("CreditCardUsers");
-        writer.setResource(new FileSystemResource("xml/ccUsers" + new Date().toString() + ".xml"));
+        writer.setResource(new FileSystemResource("xml/ccUsers.xml"));
         writer.setMarshaller(marshaller());
         return writer;
     }

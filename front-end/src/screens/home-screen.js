@@ -6,11 +6,16 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const [scheduled, setScheduled] = useState("false");
+  const [jobType, setJobType] = useState("REPORT_GENERATION");
+  const [jobPriority, setJobPriority] = useState("LOW");
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
         const { data } = await axios.get("/api/v1/jobs");
+        console.log(data);
         setLoading(false);
         setJobs(data);
       } catch (err) {
@@ -21,23 +26,27 @@ export default function HomeScreen() {
     fetchJobs();
   }, []);
 
-  const createJob = async (name, scheduled, jobType, jobPriority) => {
+  const createJob = async () => {
     try {
-      const { data } = await axios.post("/api/v1/jobs/create", {
-        name,
-        scheduled,
-        jobType,
-        jobPriority,
-      });
+      const { data } = await axios
+        .post("/api/v1/jobs/create", {
+          headers: {
+            "content-type": " application/json",
+          },
+
+          name: "job1",
+          scheduled: scheduled,
+          jobType: jobType,
+          jobPriority: jobPriority,
+        })
+        .then((res) => {
+          console.log("my call", res);
+        });
       console.log(data);
     } catch (err) {}
   };
 
-  const createScheduledJob = () => {
-    console.log("created a scheduled job");
-  };
-
-  const refresh = () => {
+  const refresh = async () => {
     try {
       setLoading(true);
       const { data } = await axios.get("/api/v1/jobs");
@@ -52,11 +61,40 @@ export default function HomeScreen() {
 
   return (
     <div>
-      <div className="center">
+      <div className="button-margin">
         <button onClick={refresh}>Refresh</button>
         <button onClick={createJob}>Create a job</button>
-        <button onClick={createScheduledJob}>Create a scheduled job</button>
+        <label>
+          Job Type :
+          <select value={jobType} onChange={(e) => setJobType(e.target.value)}>
+            <option value="REPORT_GENERATION">Report Creation</option>
+            <option value="MAIL_REPORT">Mail Report</option>
+            <option value="MIGRATE_DATA">Migrate Data</option>
+          </select>
+        </label>
+        <label>
+          Job Priority :
+          <select
+            value={jobPriority}
+            onChange={(e) => setJobPriority(e.target.value)}
+          >
+            <option value="HIGH">High</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="LOW">Low</option>
+          </select>
+        </label>
+        <label>
+          Schedule Job :
+          <select
+            value={scheduled}
+            onChange={(e) => setScheduled(e.target.value)}
+          >
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </label>
       </div>
+
       {loading ? (
         <div className="loading">
           <i className="fa fa-spinner fa-spin"></i>
@@ -66,12 +104,21 @@ export default function HomeScreen() {
           <div>Something went wrong</div>
         </div>
       ) : (
-        <div className="center">
+        <div className="row center">
           <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Scheduled</th>
+                <th>Job Status</th>
+                <th>Job Priority</th>
+              </tr>
+            </thead>
             <tbody>
               {jobs.map((job) => (
                 <tr key={job.id}>
                   <td>{job.name}</td>
+                  <td>{job.scheduled ? "Yes" : "No"}</td>
                   <td>{job.jobStatus}</td>
                   <td>{job.jobPriority}</td>
                 </tr>

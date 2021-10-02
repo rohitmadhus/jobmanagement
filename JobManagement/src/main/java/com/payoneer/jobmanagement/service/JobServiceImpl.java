@@ -71,6 +71,6 @@ public class JobServiceImpl implements JobService {
                 updateJobFlow(jobFlow);
             }
         }
-        JobConfig.queueMode = true;
+        JobConfig.queueMode = false;
     }
 }

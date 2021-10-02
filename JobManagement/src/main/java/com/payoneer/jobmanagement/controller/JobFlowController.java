@@ -27,11 +27,13 @@ public class JobFlowController {
     @PostMapping("/create")
     public void createJobFlow(@RequestBody JobFlow jobFlow) throws Exception {
         logger.info("Create job request received : ", jobFlow);
+        System.out.println(jobFlow);
         if (jobFlow.getName() != null && jobFlow.getJobType() != null && jobFlow.getJobPriority() != null) {
             JobFlow createdJob = jobService.createJobFlow(jobFlow);
             logger.info("Job Flow Created", createdJob);
-            createdJob.setJobStatus(JobFlowParameter.Job_Status.JOB_QUEUEED);
+            createdJob.setJobStatus(JobFlowParameter.Job_Status.JOB_QUEUED);
             jobService.updateJobFlow(createdJob);
+            JobConfig.pq.add(createdJob);
             if (!JobConfig.queueMode) {
                 jobService.runJob();
             }

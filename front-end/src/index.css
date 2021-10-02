@@ -71,15 +71,56 @@ a.brand {
   display: block; /* To avoid movement*/
 }
 
+.button-margin {
+  margin-left: 3rem;
+}
+
 button {
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  border: 0.1rem #a4a4a4 solid;
-  background-color: coral;
+  padding: 1rem 1.5rem;
+  border-radius: 0.4rem;
+  border: 0.1rem rgb(2, 53, 36) solid;
+  background-color: rgb(6, 88, 6);
   color: white;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 2rem 2rem;
+}
+table {
+  margin-left: 5rem;
+  margin-right: 5rem;
+  width: 100%;
+}
+th {
+  height: 4rem;
+  margin: 0rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  background-color: black;
+  color: white;
+}
+td {
+  height: 3rem;
+  margin: 0rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  align-items: center;
+  font-size: small;
+  border-bottom: 0.09rem gray solid;
+  align-content: center;
+}
+
+tr {
+  margin: 0rem;
+  border-bottom: 0.2rem black solid;
+  align-items: center;
+}
+
+select {
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.4rem;
+  border: 0.1rem rgb(2, 53, 36) solid;
+  font-size: 1.4rem;
+  margin: 1rem;
 }

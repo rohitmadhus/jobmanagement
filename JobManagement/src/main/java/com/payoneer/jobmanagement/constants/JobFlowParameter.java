@@ -2,8 +2,8 @@ package com.payoneer.jobmanagement.constants;
 
 public class JobFlowParameter {
     public enum Job_Type {
-        DATA_EXTRACTION,
-        DATA_CREATION,
+        MAIL_REPORT,
+        MIGRATE_DATA,
         REPORT_GENERATION
 
     }
@@ -12,7 +12,7 @@ public class JobFlowParameter {
         JOB_CREATED,
         JOB_RUNNING,
         JOB_FAILED,
-        JOB_QUEUEED,
+        JOB_QUEUED,
         JOB_COMPLETED
     }
 
