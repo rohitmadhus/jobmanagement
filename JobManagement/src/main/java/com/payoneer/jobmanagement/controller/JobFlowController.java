@@ -3,11 +3,12 @@ package com.payoneer.jobmanagement.controller;
 import com.payoneer.jobmanagement.models.JobFlow;
 import com.payoneer.jobmanagement.service.JobService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -15,29 +16,23 @@ import java.util.Optional;
 public class JobFlowController {
 
     private final JobService jobService;
+    private final Logger logger = LoggerFactory.getLogger(JobFlowController.class);
 
     @GetMapping
-    public List<JobFlow> fetchAllJobsFlows(){
+    public List<JobFlow> fetchAllJobsFlows() {
         return jobService.findAllJobFlows();
     }
 
-    @PostMapping("/schedule")
-    public void addScheduledJobFlow(@RequestBody String name) throws Exception {
-        if(name != null) {
-            JobFlow jobFlow = new JobFlow(name, true);
-            jobService.createJobFlow(jobFlow);
-        }else{
-            throw new Exception("Scheduled job creation failed. Job name not found");
-        }
-    }
+    @PostMapping("/create")
+    public void addScheduledJobFlow(@RequestBody JobFlow jobFlow) throws Exception {
+        logger.info("Create job request received : ", jobFlow);
+        if (jobFlow.getName() != null && jobFlow.getJobType() != null) {
+            JobFlow createdJob = jobService.createJobFlow(jobFlow);
+            logger.info("Job Flow Created", createdJob);
+            jobService.runJob(createdJob);
 
-    @PostMapping
-    public void addJobFlow(@RequestBody String name) throws Exception {
-        if(name != null) {
-            JobFlow jobFlow = new JobFlow(name, false);
-            jobService.createJobFlow(jobFlow);
-        }else{
-            throw new Exception("Job creation failed. Job name not found");
+        } else {
+            logger.error("Job creation failed, Required data not found");
         }
     }
 
@@ -46,11 +41,11 @@ public class JobFlowController {
      * every 15sec of every min hr day
      */
     @Scheduled(cron = "0/15 * * * * *")
-    public void runScheduledJob(){
-        Optional<List<JobFlow>> jobs = jobService.findAllScheduledJobs();
-         if(jobs.isPresent()){
-             System.out.println(jobs.get());
-           }
-      System.out.println("Running scheduled job");
+    public void runScheduledJob() {
+//        Optional<List<JobFlow>> jobsFlows = jobService.findAllScheduledJobs();
+//        if (jobsFlows.isPresent()) {
+//            System.out.println(jobsFlows.get());
+//        }
+//        System.out.println("Running scheduled job");
     }
 }

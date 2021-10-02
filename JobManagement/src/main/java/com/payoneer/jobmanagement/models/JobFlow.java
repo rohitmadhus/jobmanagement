@@ -23,11 +23,10 @@ public class JobFlow {
     private JobFlowParameter.Job_Status jobStatus;
     private JobFlowParameter.Job_Type jobType;
 
-    public JobFlow(String name,boolean scheduled){
+    public JobFlow(String name, boolean scheduled, JobFlowParameter.Job_Type jobType) {
         this.name = name;
         this.jobStatus = JobFlowParameter.Job_Status.JOB_CREATED;
-        this.jobType = JobFlowParameter.Job_Type.REPORT_GENERATION;
+        this.jobType = jobType;
         this.scheduled = scheduled;
-    };
-
+    }
 }

@@ -18,7 +18,7 @@ public class CreditCardUser {
     private CreditCardUserParameter.BILL_STATUS status;
     private String email;
 
-    public CreditCardUser(String name, String address, String ccNumber, float billAmount, CreditCardUserParameter.BILL_STATUS status, String email){
+    public CreditCardUser(String name, String address, String ccNumber, float billAmount, CreditCardUserParameter.BILL_STATUS status, String email) {
         this.name = name;
         this.address = address;
         this.ccNumber = ccNumber;
@@ -27,4 +27,5 @@ public class CreditCardUser {
         this.email = email;
     }
 
+    
 }

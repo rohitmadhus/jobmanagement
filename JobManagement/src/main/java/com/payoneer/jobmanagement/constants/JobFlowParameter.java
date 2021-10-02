@@ -12,7 +12,8 @@ public class JobFlowParameter {
         JOB_CREATED,
         JOB_RUNNING,
         JOB_FAILED,
-        JOB_WAITING
+        JOB_WAITING,
+        JOB_COMPLETED
     }
 }
 
