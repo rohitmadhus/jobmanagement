@@ -7,11 +7,9 @@ import com.payoneer.jobmanagement.repository.JobFlowRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +21,9 @@ public class JobServiceImpl implements JobService {
 
     private final JobFlowRepository jobFlowRepository;
     private final JobConfig jobConfig;
-    @Qualifier(value = "runReportCreationJob")
-    private final Job runReportCreationJob;
     private final JobLauncher jobLauncher;
     private final Logger logger = LoggerFactory.getLogger(JobService.class);
+
 
     @Override
     public List<JobFlow> findAllJobFlows() {
@@ -35,7 +32,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobFlow createJobFlow(JobFlow jobFlow) {
-        return jobFlowRepository.insert(jobFlow);
+        return jobFlowRepository.save(jobFlow);
     }
 
     @Override
@@ -49,22 +46,31 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void runJob(JobFlow jobflow) {
-        try {
-            logger.info("Job Started");
-            jobflow.setJobStatus(JobFlowParameter.Job_Status.JOB_RUNNING);
-            updateJobFlow(jobflow);
-            JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
-                    .toJobParameters();
-            //jobLauncher.run(runReportCreationJob, jobParameters);
-            jobLauncher.run(jobConfig.runReportCreationJob(), jobParameters);
-            logger.info("Job Completed");
-            jobflow.setJobStatus(JobFlowParameter.Job_Status.JOB_COMPLETED);
-            updateJobFlow(jobflow);
-        } catch (Exception e) {
-            logger.error("Job Completed", e);
-            jobflow.setJobStatus(JobFlowParameter.Job_Status.JOB_FAILED);
-            updateJobFlow(jobflow);
+    public void runJob() {
+        while (!JobConfig.pq.isEmpty()) {
+            JobConfig.queueMode = true;
+            logger.info("JobExecutor Started");
+            JobFlow jobFlow = JobConfig.pq.poll();
+            try {
+                jobFlow.setJobStatus(JobFlowParameter.Job_Status.JOB_RUNNING);
+                updateJobFlow(jobFlow);
+                JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis()).addString("id", jobFlow.getId())
+                        .toJobParameters();
+                if (jobFlow.getJobType().equals(JobFlowParameter.Job_Type.REPORT_GENERATION)) {
+                    jobLauncher.run(jobConfig.createReport(), jobParameters);
+                } else {
+                    throw new Exception("Job type not found");
+                }
+                logger.info("JobExecutor Completed");
+                jobFlow.setJobStatus(JobFlowParameter.Job_Status.JOB_COMPLETED);
+                updateJobFlow(jobFlow);
+
+            } catch (Exception e) {
+                logger.error("JobExecutor Completed", e);
+                jobFlow.setJobStatus(JobFlowParameter.Job_Status.JOB_FAILED);
+                updateJobFlow(jobFlow);
+            }
         }
+        JobConfig.queueMode = true;
     }
 }

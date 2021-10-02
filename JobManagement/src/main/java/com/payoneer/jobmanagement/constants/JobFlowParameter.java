@@ -8,12 +8,18 @@ public class JobFlowParameter {
 
     }
 
-    public enum Job_Status{
+    public enum Job_Status {
         JOB_CREATED,
         JOB_RUNNING,
         JOB_FAILED,
-        JOB_WAITING,
+        JOB_QUEUEED,
         JOB_COMPLETED
+    }
+
+    public enum Job_Priority {
+        HIGH,
+        MEDIUM,
+        LOW
     }
 }
 

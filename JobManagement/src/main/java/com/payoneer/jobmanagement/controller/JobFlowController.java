@@ -1,11 +1,12 @@
 package com.payoneer.jobmanagement.controller;
 
+import com.payoneer.jobmanagement.config.JobConfig;
+import com.payoneer.jobmanagement.constants.JobFlowParameter;
 import com.payoneer.jobmanagement.models.JobFlow;
 import com.payoneer.jobmanagement.service.JobService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,15 +25,18 @@ public class JobFlowController {
     }
 
     @PostMapping("/create")
-    public void addScheduledJobFlow(@RequestBody JobFlow jobFlow) throws Exception {
+    public void createJobFlow(@RequestBody JobFlow jobFlow) throws Exception {
         logger.info("Create job request received : ", jobFlow);
-        if (jobFlow.getName() != null && jobFlow.getJobType() != null) {
+        if (jobFlow.getName() != null && jobFlow.getJobType() != null && jobFlow.getJobPriority() != null) {
             JobFlow createdJob = jobService.createJobFlow(jobFlow);
             logger.info("Job Flow Created", createdJob);
-            jobService.runJob(createdJob);
-
+            createdJob.setJobStatus(JobFlowParameter.Job_Status.JOB_QUEUEED);
+            jobService.updateJobFlow(createdJob);
+            if (!JobConfig.queueMode) {
+                jobService.runJob();
+            }
         } else {
-            logger.error("Job creation failed, Required data not found");
+            logger.error("Job flow creation failed, Required data not found");
         }
     }
 
@@ -40,12 +44,19 @@ public class JobFlowController {
      * The scheduler to run the scheduled job
      * every 15sec of every min hr day
      */
-    @Scheduled(cron = "0/15 * * * * *")
-    public void runScheduledJob() {
+//    @Scheduled(cron = "0/15 * * * * *")
+//    public void runScheduledJob() {
 //        Optional<List<JobFlow>> jobsFlows = jobService.findAllScheduledJobs();
+//        for (JobFlow job : jobsFlows.get()) {
+//            job.setJobStatus(JobFlowParameter.Job_Status.JOB_QUEUEED);
+//            jobService.updateJobFlow(job);
+//        }
 //        if (jobsFlows.isPresent()) {
-//            System.out.println(jobsFlows.get());
+//            JobConfig.pq.addAll(jobsFlows.get());
+//            if (!JobConfig.queueMode) {
+//                jobService.runJob();
+//            }
 //        }
 //        System.out.println("Running scheduled job");
-    }
+//    }
 }

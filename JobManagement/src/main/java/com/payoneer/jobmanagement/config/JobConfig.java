@@ -3,6 +3,7 @@ package com.payoneer.jobmanagement.config;
 import com.mongodb.MongoException;
 import com.payoneer.jobmanagement.constants.CreditCardUserParameter;
 import com.payoneer.jobmanagement.models.CreditCardUser;
+import com.payoneer.jobmanagement.models.JobFlow;
 import com.payoneer.jobmanagement.util.MailUtil;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -26,18 +27,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.oxm.xstream.XStreamMarshaller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 @EnableBatchProcessing
 public class JobConfig {
-
-
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final MongoTemplate mongoTemplate;
     private final MailUtil mailUtil;
+
+    public static PriorityQueue<JobFlow> pq = new PriorityQueue(10, Comparator.comparing(JobFlow::getJobPriority));
+    public static boolean queueMode = false;
+
 
     public JobConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, MongoTemplate mongoTemplate, MailUtil mailUtil) {
         this.jobBuilderFactory = jobBuilderFactory;
@@ -68,7 +70,7 @@ public class JobConfig {
     public StaxEventItemWriter<CreditCardUser> writer() throws Exception {
         StaxEventItemWriter<CreditCardUser> writer = new StaxEventItemWriter<>();
         writer.setRootTagName("CreditCardUsers");
-        writer.setResource(new FileSystemResource("xml/ccUsers.xml"));
+        writer.setResource(new FileSystemResource("xml/ccUsers" + new Date().toString() + ".xml"));
         writer.setMarshaller(marshaller());
         return writer;
     }
@@ -93,7 +95,7 @@ public class JobConfig {
 
     @Bean
     public Step step2() throws Exception {
-        return stepBuilderFactory.get("step2").<CreditCardUser, CreditCardUser>chunk(10).reader(reader()).processor(process()).allowStartIfComplete(true).build();
+        return stepBuilderFactory.get("step2").<CreditCardUser, CreditCardUser>chunk(10).reader(reader()).writer(writer()).allowStartIfComplete(true).build();
     }
 
     @Bean(name = "runReportCreationJob")
@@ -103,8 +105,8 @@ public class JobConfig {
                 .flow(step1()).end().build();
     }
 
-    @Bean(name = "sendMail")
-    public Job runSendMailJob() throws Exception {
+    @Bean(name = "report")
+    public Job createReport() throws Exception {
         return jobBuilderFactory.get("processJob")
                 .incrementer(new RunIdIncrementer()).listener(listener())
                 .flow(step2()).end().build();
@@ -143,8 +145,12 @@ public class JobConfig {
         return new JobExecutionListenerSupport() {
             @Override
             public void afterJob(JobExecution jobExecution) {
+                System.out.println(jobExecution.getStatus());
                 if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
                     System.out.println("BATCH JOB COMPLETED SUCCESSFULLY");
+                }
+                if (jobExecution.getStatus() == BatchStatus.ABANDONED || jobExecution.getStatus() == BatchStatus.FAILED || jobExecution.getStatus() == BatchStatus.STOPPED) {
+
                 }
             }
         };
