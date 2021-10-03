@@ -22,7 +22,7 @@ public class JobServiceImpl implements JobService {
     private final JobFlowRepository jobFlowRepository;
     private final JobConfig jobConfig;
     private final JobLauncher jobLauncher;
-    private final Logger logger = LoggerFactory.getLogger(JobService.class);
+    private final Logger logger = LoggerFactory.getLogger(JobServiceImpl.class);
 
 
     @Override
@@ -46,27 +46,33 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public void deleteJobFlow(JobFlow jobFlow) {
+        jobFlowRepository.delete(jobFlow);
+    }
+
+    @Override
     public void runJob() {
         while (!JobConfig.pq.isEmpty()) {
             JobConfig.queueMode = true;
-            logger.info("JobExecutor Started");
             JobFlow jobFlow = JobConfig.pq.poll();
             try {
                 jobFlow.setJobStatus(JobFlowParameter.Job_Status.JOB_RUNNING);
                 updateJobFlow(jobFlow);
                 JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis()).addString("id", jobFlow.getId())
                         .toJobParameters();
+                logger.info("Job Execution Started : " + jobFlow);
                 if (jobFlow.getJobType().equals(JobFlowParameter.Job_Type.REPORT_GENERATION)) {
                     jobLauncher.run(jobConfig.createReport(), jobParameters);
                 } else {
                     throw new Exception("Job type not found");
                 }
-                logger.info("JobExecutor Completed");
+                logger.info("Job Execution Completed : " + jobFlow);
                 jobFlow.setJobStatus(JobFlowParameter.Job_Status.JOB_COMPLETED);
                 updateJobFlow(jobFlow);
 
             } catch (Exception e) {
-                logger.error("JobExecutor Completed", e);
+                logger.info("Job Execution Failed : ", jobFlow);
+                logger.error(e.toString());
                 jobFlow.setJobStatus(JobFlowParameter.Job_Status.JOB_FAILED);
                 updateJobFlow(jobFlow);
             }

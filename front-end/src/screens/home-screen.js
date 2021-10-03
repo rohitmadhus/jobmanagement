@@ -15,7 +15,6 @@ export default function HomeScreen() {
       try {
         setLoading(true);
         const { data } = await axios.get("/api/v1/jobs");
-        console.log(data);
         setLoading(false);
         setJobs(data);
       } catch (err) {
@@ -28,7 +27,7 @@ export default function HomeScreen() {
 
   const createJob = async () => {
     try {
-      const { data } = await axios
+      await axios
         .post("/api/v1/jobs/create", {
           headers: {
             "content-type": " application/json",
@@ -40,9 +39,8 @@ export default function HomeScreen() {
           jobPriority: jobPriority,
         })
         .then((res) => {
-          console.log("my call", res);
+          console.log("my call", res.data);
         });
-      console.log(data);
     } catch (err) {}
   };
 
@@ -52,7 +50,6 @@ export default function HomeScreen() {
       const { data } = await axios.get("/api/v1/jobs");
       setLoading(false);
       setJobs(data);
-      console.log(data);
     } catch (err) {
       setError(err.message);
       setLoading(false);

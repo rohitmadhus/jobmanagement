@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @Document(collection = "job-flows")
-public class JobFlow implements Runnable {
+public class JobFlow {
     @Id
     private String id;
     @CreatedDate
@@ -31,9 +31,5 @@ public class JobFlow implements Runnable {
         this.scheduled = scheduled;
         this.jobPriority = jobPriority;
     }
-
-
-    @Override
-    public void run() {
-    }
+    
 }

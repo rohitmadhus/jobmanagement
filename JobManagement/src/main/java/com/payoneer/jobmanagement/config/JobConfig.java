@@ -5,6 +5,8 @@ import com.payoneer.jobmanagement.constants.CreditCardUserParameter;
 import com.payoneer.jobmanagement.models.CreditCardUser;
 import com.payoneer.jobmanagement.models.JobFlow;
 import com.payoneer.jobmanagement.util.MailUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -35,6 +37,9 @@ import java.util.PriorityQueue;
 @Configuration
 @EnableBatchProcessing
 public class JobConfig {
+
+    private final Logger logger = LoggerFactory.getLogger(JobConfig.class);
+
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final MongoTemplate mongoTemplate;
@@ -121,7 +126,7 @@ public class JobConfig {
      */
     @Bean
     @StepScope
-    public ItemProcessor<CreditCardUser, CreditCardUser> process() {
+    public ItemProcessor<CreditCardUser, CreditCardUser> process() throws Exception {
         ItemProcessor<CreditCardUser, CreditCardUser> process = new ItemProcessor<CreditCardUser, CreditCardUser>() {
             @Override
             public CreditCardUser process(CreditCardUser creditCardUser) throws Exception {
@@ -150,10 +155,10 @@ public class JobConfig {
             public void afterJob(JobExecution jobExecution) {
                 System.out.println(jobExecution.getStatus());
                 if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-                    System.out.println("BATCH JOB COMPLETED SUCCESSFULLY");
+                    logger.info("BATCH JOB COMPLETED SUCCESSFULLY");
                 }
                 if (jobExecution.getStatus() == BatchStatus.ABANDONED || jobExecution.getStatus() == BatchStatus.FAILED || jobExecution.getStatus() == BatchStatus.STOPPED) {
-
+                    logger.info("BATCH JOB FAILED");
                 }
             }
         };

@@ -17,4 +17,6 @@ public interface JobService {
     public void runJob();
 
     public JobFlow updateJobFlow(JobFlow jobFlow);
+
+    public void deleteJobFlow(JobFlow jobFlow);
 }
