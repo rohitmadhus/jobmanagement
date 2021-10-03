@@ -14,14 +14,13 @@ import java.util.Properties;
 public class MailUtil {
 
     @Bean
-    public JavaMailSender getJavaMailSender()
-    {
+    public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(25);
 
         mailSender.setUsername("connectrmgroup@gmail.com");
-        mailSender.setPassword("shobanaps");
+        mailSender.setPassword("*********");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
@@ -33,11 +32,10 @@ public class MailUtil {
     }
 
     @Autowired
-    private JavaMailSender mailSender ;
+    private JavaMailSender mailSender;
 
 
-
-    public String sendEmail(String to,String body){
+    public String sendEmail(String to, String body) {
         String msg = "";
         SimpleMailMessage message = new SimpleMailMessage();
         try {
@@ -47,7 +45,7 @@ public class MailUtil {
             message.setFrom("rmfuelsttm@gmail.com");
             mailSender.send(message);
             msg = "Mail triggered to" + to;
-        }catch (Exception e){
+        } catch (Exception e) {
             msg = e.getMessage();
         }
         return msg;
