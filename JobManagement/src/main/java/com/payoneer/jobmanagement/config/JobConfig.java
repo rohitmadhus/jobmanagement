@@ -29,10 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.oxm.xstream.XStreamMarshaller;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @Configuration
 @EnableBatchProcessing
@@ -58,7 +55,7 @@ public class JobConfig {
 
     @Bean
     @StepScope
-    public MongoItemReader<CreditCardUser> reader() throws Exception, ParseException, NonTransientResourceException, MongoException {
+    public MongoItemReader<CreditCardUser> reader() throws ParseException, NonTransientResourceException, MongoException {
         MongoItemReader<CreditCardUser> reader = new MongoItemReader<>();
         reader.setTemplate(mongoTemplate);
         reader.setQuery("{}");
@@ -78,12 +75,12 @@ public class JobConfig {
     public StaxEventItemWriter<CreditCardUser> writer() throws Exception {
         StaxEventItemWriter<CreditCardUser> writer = new StaxEventItemWriter<>();
         writer.setRootTagName("CreditCardUsers");
-        writer.setResource(new FileSystemResource("xml/ccUsers.xml"));
+        writer.setResource(new FileSystemResource("xml/ccUsers" + new Date() + ".xml"));
         writer.setMarshaller(marshaller());
         return writer;
     }
 
-    private XStreamMarshaller marshaller() throws Exception {
+    private XStreamMarshaller marshaller() {
         XStreamMarshaller marshaller = new XStreamMarshaller();
         Map<String, Class> map = new HashMap<>();
         map.put("CreditCardUser", CreditCardUser.class);

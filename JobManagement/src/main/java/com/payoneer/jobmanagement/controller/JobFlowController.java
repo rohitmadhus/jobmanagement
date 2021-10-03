@@ -7,9 +7,11 @@ import com.payoneer.jobmanagement.service.JobService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -45,9 +47,10 @@ public class JobFlowController {
 
     /**
      * The scheduler to run the scheduled job
-     * every 15sec of every min hr day
+     * every 15sec
+     * min hr day month week
      */
-    @Scheduled(cron = "0/15 * * * * *")
+    @Scheduled(cron = "*/60 * * * * *")
     public void runScheduledJob() {
         logger.info("Cron job started");
         Optional<List<JobFlow>> jobsFlows = jobService.findAllScheduledJobs();
