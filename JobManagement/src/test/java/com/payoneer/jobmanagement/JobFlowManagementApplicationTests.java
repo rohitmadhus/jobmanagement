@@ -34,30 +34,37 @@ class JobFlowManagementApplicationTests {
     private static List<JobFlow> deleteJobFlowList = new ArrayList<>();
 
 
-    @Test
-    void contextLoads() {
-    }
-
-    /**
-     * Executing job one after another no queuing happens over here
-     */
-
-    @Test
-    void jobExecutionTest() throws Exception {
-    }
-
-    /**
-     * Executing job one after another no queuing happens over here
-     */
     @BeforeEach
     void addDBData() {
         jobFromDb1 = jobService.createJobFlow(JobFlowManagementTestData.job1);
         jobFromDb2 = jobService.createJobFlow(JobFlowManagementTestData.job2);
         jobFromDb3 = jobService.createJobFlow(JobFlowManagementTestData.job3);
         jobFromDb4 = jobService.createJobFlow(JobFlowManagementTestData.job4);
-
     }
 
+    @Test
+    void contextLoads() {
+    }
+
+    /**
+     * Executing job one after another
+     */
+    @Test
+    void jobExecutionTest() throws Exception {
+        JobFlow job1 = jobFlowController.createJobFlow(JobFlowManagementTestData.job1);
+        deleteJobFlowList.add(job1);
+        JobFlow job2 = jobFlowController.createJobFlow(JobFlowManagementTestData.job2);
+        deleteJobFlowList.add(job2);
+        JobFlow job3 = jobFlowController.createJobFlow(JobFlowManagementTestData.job3);
+        deleteJobFlowList.add(job3);
+        JobFlow job4 = jobFlowController.createJobFlow(JobFlowManagementTestData.job4);
+        deleteJobFlowList.add(job4);
+    }
+
+    /**
+     * Executing job one after another by queuing with priority
+     * mimics the cron job also
+     */
     @Test
     void jobExecutionByPriorityTest() throws Exception {
         JobConfig.pq.add(jobFromDb1);
@@ -67,6 +74,9 @@ class JobFlowManagementApplicationTests {
         jobService.runJob();
     }
 
+    /**
+     * Delete all mongo document created during testing
+     */
     @AfterEach
     void deleteDataOfTestCase() {
         for (JobFlow jobFlow : deleteJobFlowList) {
