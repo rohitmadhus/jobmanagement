@@ -20,7 +20,7 @@ public class MailUtil {
         mailSender.setPort(25);
 
         mailSender.setUsername("connectrmgroup@gmail.com");
-        mailSender.setPassword("shobanaps");
+        mailSender.setPassword("**********");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
