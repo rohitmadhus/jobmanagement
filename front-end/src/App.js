@@ -7,7 +7,7 @@ function App() {
       <header className="row">
         <div>
           <a className="brand" href="/">
-            Payoneer
+            Job Management
           </a>
         </div>
       </header>

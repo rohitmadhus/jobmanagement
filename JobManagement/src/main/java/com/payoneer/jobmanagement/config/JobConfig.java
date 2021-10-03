@@ -57,7 +57,7 @@ public class JobConfig {
     }
 
     @Bean
-    //@StepScope
+    @StepScope
     public MongoItemReader<CreditCardUser> reader() throws Exception, ParseException, NonTransientResourceException, MongoException {
         MongoItemReader<CreditCardUser> reader = new MongoItemReader<>();
         reader.setTemplate(mongoTemplate);
@@ -73,8 +73,8 @@ public class JobConfig {
      * object to xml -> Marshalling
      * apis -> JAXB,STAX
      */
-    @Bean
-    //@StepScope
+    @Bean(destroyMethod = "")
+    @StepScope
     public StaxEventItemWriter<CreditCardUser> writer() throws Exception {
         StaxEventItemWriter<CreditCardUser> writer = new StaxEventItemWriter<>();
         writer.setRootTagName("CreditCardUsers");

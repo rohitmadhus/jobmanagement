@@ -34,6 +34,9 @@ class JobFlowManagementApplicationTests {
     private static List<JobFlow> deleteJobFlowList = new ArrayList<>();
 
 
+    /**
+     * Create DB records to testcases
+     */
     @BeforeEach
     void addDBData() {
         jobFromDb1 = jobService.createJobFlow(JobFlowManagementTestData.job1);
@@ -68,9 +71,9 @@ class JobFlowManagementApplicationTests {
     @Test
     void jobExecutionByPriorityTest() throws Exception {
         JobConfig.pq.add(jobFromDb1);
-        JobConfig.pq.add(jobFromDb1);
-        JobConfig.pq.add(jobFromDb1);
-        JobConfig.pq.add(jobFromDb1);
+        JobConfig.pq.add(jobFromDb2);
+        JobConfig.pq.add(jobFromDb3);
+        JobConfig.pq.add(jobFromDb4);
         jobService.runJob();
     }
 
