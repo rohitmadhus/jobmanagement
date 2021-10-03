@@ -1,0 +1,126 @@
+html {
+  font-size: 62.5%; /* 16px(default font size) * 62.5 = 10px = 1rem */
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-size: 1.6rem;
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 4rem 1fr 4rem;
+  height: 100%;
+}
+
+header {
+  grid-area: header; /*linking this area with above mention header*/
+  background-color: #202040;
+}
+
+main {
+  grid-area: main;
+  padding: 1rem;
+}
+
+footer {
+  grid-area: footer;
+  background-color: #202040;
+  color: #ffffff;
+  font-size: 1.3rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /*if no space in line then will move to next line */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row.center {
+  justify-content: center;
+}
+
+.row.top {
+  align-items: flex-start;
+}
+
+a.brand {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  padding-left: 2rem;
+  text-decoration: none;
+}
+
+.loading {
+  display: block; /* To avoid movement*/
+}
+
+.button-margin {
+  margin-left: 3rem;
+}
+
+button {
+  padding: 1rem 1.5rem;
+  border-radius: 0.4rem;
+  border: 0.1rem rgb(2, 53, 36) solid;
+  background-color: rgb(6, 88, 6);
+  color: white;
+  font-size: 1.4rem;
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 2rem 2rem;
+}
+table {
+  margin-left: 5rem;
+  margin-right: 5rem;
+  width: 100%;
+}
+th {
+  height: 4rem;
+  margin: 0rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  background-color: black;
+  color: white;
+}
+td {
+  height: 3rem;
+  margin: 0rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  align-items: center;
+  font-size: small;
+  border-bottom: 0.09rem gray solid;
+  align-content: center;
+}
+
+tr {
+  margin: 0rem;
+  border-bottom: 0.2rem black solid;
+  align-items: center;
+}
+
+select {
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.4rem;
+  border: 0.1rem rgb(2, 53, 36) solid;
+  font-size: 1.4rem;
+  margin: 1rem;
+}

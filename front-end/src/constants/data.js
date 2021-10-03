@@ -1,0 +1,38 @@
+export const data = [
+  {
+    createdDate: "2021-09-30T16:47:24.217+00:00",
+    id: "6155ea1c75b347348c4883ed",
+    jobStatus: "JOB_CREATED",
+    jobType: "DATA_CREATION",
+    lastModifiedDate: "2021-09-30T16:47:24.217+00:00",
+    name: "job1",
+    scheduled: false,
+  },
+  {
+    createdDate: "2021-09-30T16:47:24.217+00:00",
+    id: "6155ea1c75b347348c4883ec",
+    jobStatus: "JOB_CREATED",
+    jobType: "DATA_CREATION",
+    lastModifiedDate: "2021-09-30T16:47:24.217+00:00",
+    name: "job1",
+    scheduled: false,
+  },
+  {
+    createdDate: "2021-09-30T16:47:24.217+00:00",
+    id: "6155ea1c75b347348c4883en",
+    jobStatus: "JOB_CREATED",
+    jobType: "DATA_CREATION",
+    lastModifiedDate: "2021-09-30T16:47:24.217+00:00",
+    name: "job1",
+    scheduled: false,
+  },
+  {
+    createdDate: "2021-09-30T16:47:24.217+00:00",
+    id: "6155ea1c75b347348c4883ez",
+    jobStatus: "JOB_CREATED",
+    jobType: "DATA_CREATION",
+    lastModifiedDate: "2021-09-30T16:47:24.217+00:00",
+    name: "job1",
+    scheduled: false,
+  },
+];
