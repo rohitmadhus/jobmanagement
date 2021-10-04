@@ -62,7 +62,7 @@ public class JobServiceImpl implements JobService {
                         .toJobParameters();
                 logger.info("Job Execution Started : " + jobFlow);
                 if (jobFlow.getJobType().equals(JobFlowParameter.Job_Type.REPORT_GENERATION)) {
-                    jobLauncher.run(jobConfig.createReport(), jobParameters);
+                    jobLauncher.run(jobConfig.createReportWithMail(), jobParameters);
                 } else {
                     throw new Exception("Job type not found");
                 }

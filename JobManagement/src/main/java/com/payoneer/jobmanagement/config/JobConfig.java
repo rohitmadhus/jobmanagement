@@ -103,15 +103,15 @@ public class JobConfig {
         return stepBuilderFactory.get("step2").<CreditCardUser, CreditCardUser>chunk(10).reader(reader()).writer(writer()).allowStartIfComplete(true).build();
     }
 
-    @Bean(name = "runReportCreationJob")
-    public Job runReportCreationJob() throws Exception {
+    @Bean(name = "createReportWithMail")
+    public Job createReportWithMail() throws Exception {
         return jobBuilderFactory.get("processJob")
                 .incrementer(new RunIdIncrementer()).listener(listener())
                 .flow(step1()).end().build();
     }
 
-    @Bean(name = "report")
-    public Job createReport() throws Exception {
+    @Bean(name = "createReportWithoutMail")
+    public Job createReportWithoutMail() throws Exception {
         return jobBuilderFactory.get("processJob")
                 .incrementer(new RunIdIncrementer()).listener(listener())
                 .flow(step2()).end().build();

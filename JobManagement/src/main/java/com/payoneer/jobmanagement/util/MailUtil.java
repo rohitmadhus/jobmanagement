@@ -1,6 +1,7 @@
 package com.payoneer.jobmanagement.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,14 +14,20 @@ import java.util.Properties;
 @Component
 public class MailUtil {
 
+    @Value("${mailConfig.id}")
+    private String email;
+
+    @Value("${mailConfig.password}")
+    private String password;
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(25);
 
-        mailSender.setUsername("connectrmgroup@gmail.com");
-        mailSender.setPassword("**********");
+        mailSender.setUsername(email);
+        mailSender.setPassword(password);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
