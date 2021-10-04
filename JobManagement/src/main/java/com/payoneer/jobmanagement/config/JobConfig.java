@@ -29,10 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.oxm.xstream.XStreamMarshaller;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @Configuration
 @EnableBatchProcessing
@@ -57,8 +54,8 @@ public class JobConfig {
     }
 
     @Bean
-    //@StepScope
-    public MongoItemReader<CreditCardUser> reader() throws Exception, ParseException, NonTransientResourceException, MongoException {
+    @StepScope
+    public MongoItemReader<CreditCardUser> reader() throws ParseException, NonTransientResourceException, MongoException {
         MongoItemReader<CreditCardUser> reader = new MongoItemReader<>();
         reader.setTemplate(mongoTemplate);
         reader.setQuery("{}");
@@ -73,17 +70,17 @@ public class JobConfig {
      * object to xml -> Marshalling
      * apis -> JAXB,STAX
      */
-    @Bean
-    //@StepScope
+    @Bean(destroyMethod = "")
+    @StepScope
     public StaxEventItemWriter<CreditCardUser> writer() throws Exception {
         StaxEventItemWriter<CreditCardUser> writer = new StaxEventItemWriter<>();
         writer.setRootTagName("CreditCardUsers");
-        writer.setResource(new FileSystemResource("xml/ccUsers.xml"));
+        writer.setResource(new FileSystemResource("xml/ccUsers" + new Date() + ".xml"));
         writer.setMarshaller(marshaller());
         return writer;
     }
 
-    private XStreamMarshaller marshaller() throws Exception {
+    private XStreamMarshaller marshaller() {
         XStreamMarshaller marshaller = new XStreamMarshaller();
         Map<String, Class> map = new HashMap<>();
         map.put("CreditCardUser", CreditCardUser.class);
@@ -106,15 +103,15 @@ public class JobConfig {
         return stepBuilderFactory.get("step2").<CreditCardUser, CreditCardUser>chunk(10).reader(reader()).writer(writer()).allowStartIfComplete(true).build();
     }
 
-    @Bean(name = "runReportCreationJob")
-    public Job runReportCreationJob() throws Exception {
+    @Bean(name = "createReportWithMail")
+    public Job createReportWithMail() throws Exception {
         return jobBuilderFactory.get("processJob")
                 .incrementer(new RunIdIncrementer()).listener(listener())
                 .flow(step1()).end().build();
     }
 
-    @Bean(name = "report")
-    public Job createReport() throws Exception {
+    @Bean(name = "createReportWithoutMail")
+    public Job createReportWithoutMail() throws Exception {
         return jobBuilderFactory.get("processJob")
                 .incrementer(new RunIdIncrementer()).listener(listener())
                 .flow(step2()).end().build();

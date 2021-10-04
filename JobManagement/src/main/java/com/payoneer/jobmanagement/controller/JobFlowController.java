@@ -47,9 +47,12 @@ public class JobFlowController {
 
     /**
      * The scheduler to run the scheduled job
-     * every 15sec of every min hr day
+     * "," to specify diff Value, * matches every Value, - range of Value
+     * "/" after specified time
+     * sec min hr day month week
+     * every 1 minute
      */
-    @Scheduled(cron = "0/15 * * * * *")
+    @Scheduled(cron = "* */1 * * * *")
     public void runScheduledJob() {
         logger.info("Cron job started");
         Optional<List<JobFlow>> jobsFlows = jobService.findAllScheduledJobs();
